@@ -1,6 +1,6 @@
-# BF interpreter
+# bf-rust
 
-A simple interpreter for the language brainfuck.
+A simple interpreter for the esoteric language [https://en.wikipedia.org/wiki/Brainfuck](Brainfuck).
 
 It also has a basic debugger if you run the program with `-d` as a command line argument.
 
