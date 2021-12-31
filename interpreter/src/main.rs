@@ -31,7 +31,6 @@ fn main() {
     let mut interpreter = Interpreter::new(&source);
 
     if !args.debug {
-        // TODO: read a file and use it
         loop {
             match interpreter.step() {
                 Ok(res) => match res {
@@ -63,7 +62,7 @@ fn main() {
             std::io::stdin().read_line(&mut cmd).unwrap();
             cmd.pop();
             let cmd: Vec<&str> = cmd.split_ascii_whitespace().collect();
-            if cmd.len() > 0 {
+            if !cmd.is_empty() {
                 match cmd[0] {
                     "data" => {
                         // print data [i] or data [dp]

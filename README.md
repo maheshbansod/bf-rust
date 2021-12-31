@@ -2,7 +2,7 @@
 
 A simple interpreter for the language brainfuck.
 
-It also has a basic debugger if you run the program with `i` as a command line argument.
+It also has a basic debugger if you run the program with `-d` as a command line argument.
 
 The interactive debugger supports the following commands:
 - `data [i1 i2 ..]` : outputs the data at the given positions of the data array.

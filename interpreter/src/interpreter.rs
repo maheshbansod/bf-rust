@@ -35,7 +35,6 @@ impl Interpreter {
 
     /// Steps one character forward (ignoring whitespace)
     pub fn step(&mut self) -> Result<AtomicResult, Error> {
-        // TODO: ignore whitespace.
         match self.ip.cmp(&self.src.len()) {
             Ordering::Equal => Ok(AtomicResult::EndOfProgram),
             Ordering::Greater => Err(Error {
@@ -125,14 +124,12 @@ impl Interpreter {
                             kind: ErrorKind::MissingOpeningBracket(self.ip),
                         })
                     }
+                } else if self.opening_brackets.pop().is_none() {
+                    Err(Error {
+                        kind: ErrorKind::MissingOpeningBracket(self.ip),
+                    })
                 } else {
-                    if self.opening_brackets.pop().is_none() {
-                        Err(Error {
-                            kind: ErrorKind::MissingOpeningBracket(self.ip),
-                        })
-                    } else {
-                        Ok(AtomicResult::Ok)
-                    }
+                    Ok(AtomicResult::Ok)
                 }
             }
             _ => Ok(AtomicResult::Ok),
