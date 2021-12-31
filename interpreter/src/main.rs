@@ -1,18 +1,36 @@
 mod interpreter;
 
-use std::env;
 use std::io::Write;
+use structopt::StructOpt;
 
 use interpreter::{AtomicResult, Interpreter};
+
+#[derive(StructOpt)]
+struct Cli {
+    /// Interactive debug mode
+    #[structopt(short, long)]
+    debug: bool,
+    /// The path to the file to read
+    #[structopt(parse(from_os_str))]
+    path: std::path::PathBuf,
+}
+
 fn main() {
-    let source = std::fs::read_to_string("bf_examples/hello_world.bf").unwrap();
+    let args = Cli::from_args();
+    let source = match std::fs::read_to_string(&args.path) {
+        Ok(source) => source,
+        Err(err) => {
+            eprintln!("Couldn't read the file at `{:?}`\n{}", args.path, err);
+            if let Some(code) = err.raw_os_error() {
+                std::process::exit(code);
+            } else {
+                std::process::exit(1);
+            }
+        }
+    };
     let mut interpreter = Interpreter::new(&source);
 
-    let args: Vec<String> = env::args().collect();
-
-    let interactive = args.len() > 1 && args.contains(&"i".to_owned());
-
-    if !interactive {
+    if !args.debug {
         // TODO: read a file and use it
         loop {
             match interpreter.step() {
