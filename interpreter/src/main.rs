@@ -5,13 +5,12 @@ use std::io::Write;
 
 use interpreter::{AtomicResult, Interpreter};
 fn main() {
-    let hello_world = "++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.";
-    let _test_print_one = "+++++++[>+++++++<-]>.";
-    let mut interpreter = Interpreter::new(hello_world);
+    let source = std::fs::read_to_string("bf_examples/hello_world.bf").unwrap();
+    let mut interpreter = Interpreter::new(&source);
 
     let args: Vec<String> = env::args().collect();
 
-    let interactive = args.len() > 1 && args[1] == "i";
+    let interactive = args.len() > 1 && args.contains(&"i".to_owned());
 
     if !interactive {
         // TODO: read a file and use it
